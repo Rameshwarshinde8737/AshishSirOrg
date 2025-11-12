@@ -1,0 +1,83 @@
+<template>
+    <div class="item ">
+        <div class={folderSectionClass} style={indentStyle}>
+            <!-- Name: clickable only for portfolio -->
+            <template if:true={isPortfolio}>
+                <div style="display: flex;align-items:center;gap:6px">
+                    <span if:false={isSideBarVariant} onclick={handleChevronClick} class={chevronOrFolderIconClass}></span>
+                    <span title={folder.Name} onclick={handleFolderNameClick}>{folder.Name}</span>
+                </div>
+            </template>
+            <template if:false={isPortfolio}>
+                <div style="display: flex;align-items:center;gap:6px" onclick={handleProjectClick}>
+                    <span class="icon-portfolio-icon"></span>
+                    <span>{folder.Name}</span>
+                </div>
+            </template>
+        
+            <div class="iconContainer">
+                <!-- Chevron only for portfolio -->
+                <template if:true={isPortfolio}>
+                    <span if:false={isPortfolioVariant} class={chevronIconSidebar}></span>
+                    <span if:true={isPortfolioVariant} class="icon-timeline-icon"></span>
+                </template>
+                <template if:true={isIconVisibleForMove}>
+                    <span class={threeDotClass} onclick={toggleDropdown}></span>
+                </template>
+            </div>
+        </div>
+        <template if:true={folder.expanded}>
+            <template if:true={folder.ChildRecords}>
+                <template for:each={folder.ChildRecords} for:item="childFolder">
+                    <c-folder-item key={childFolder.Id} folder={childFolder} from={from} folders-for-move={foldersForMove}></c-folder-item>
+                </template>
+            </template>
+        </template>
+        
+        <div class="slds-is-relative">
+            <template if:true={isShowMoreActions}>
+                <div class="slds-dropdown-trigger_click">
+                     <div class="slds-popover" role="dialog" style={popoverStyle}
+                        data-id="popover">
+                        <div class="slds-p-around_xx-small">
+                            <div onclick={stopClose} class="slds-grid slds-grid_vertical slds-p-horizontal_small slds-p-vertical_x-small">
+                                <template for:each={dropdownActions} for:item="action">
+                                    <a key={action.value} class="custom-dropdown-item" onclick={handleMenuAction}
+                                        data-action={action.value}>
+                                        {action.label}
+                                    </a>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Add Folder Popup -->
+            <template if:true={isAddNewFolderProject}>
+                <section class="slds-popover slds-popover_small "
+                         role="tooltip"
+                         data-id="addFolderProject"
+                         style={popupStyle}>
+                    <div class="slds-p-around_xx-small" onclick={stopClose}>
+                        <div class="slds-grid slds-align-middle">
+                            <lightning-input type="text"
+                                             name="folderName"
+                                             variant="label-hidden"
+                                             onchange={handleFolderNameChange}
+                                             value={holdFolderName}
+                                             placeholder={actionType}>
+                            </lightning-input>
+                            <lightning-button label="Add"
+                                              variant="brand"
+                                              onclick={handleCreateFolder}>
+                            </lightning-button>
+                        </div>
+                    </div>
+                </section>
+            </template>
+        </div>
+        <c-move-folder-project onclosemove={handleCloseMove} open-move-model={isShowMoveModal} is-show-clone-modal={isShowCloneModal} folders-for-move={foldersForMove} folder-to-move={folderToMove}></c-move-folder-project>
+        <!-- <c-clone-project-modal oncloseclone={handleCloseClone} is-show-clone-modal={isShowCloneModal} selected-clone-project={selectedCloneProject}></c-clone-project-modal> -->
+    </div>
+</template>

@@ -1,0 +1,204 @@
+:host {
+    --main-bg-color: #ffffff;
+    --slds-c-card-heading-font-size: 1rem;
+    --slds-c-accordion-section-sizing-border: 0;
+    color: #565F64;
+}
+
+[class^="icon-"],
+[class*=" icon-"] {
+    color: #565F64;
+    display: inline-block;
+    text-align: center;
+    font-size:0.813rem;
+}
+
+.accordion-container {
+    max-height: 25rem;   /* adjust height as needed */
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 0.5rem; /* space for scrollbar */
+}
+
+
+.custom-toggle {
+    transform: scale(0.7);
+}
+
+.priority-red {
+    color: #D42E2E;
+}
+
+.priority-blue {
+    color: #1573A0;
+}
+
+.priority-green {
+    color: #194214;
+}
+
+.accordion {
+    cursor: pointer;
+    padding: 0.625rem;
+    width: 100%;
+    border: none;
+    text-align: left;
+    font-size: 0.688rem;
+    letter-spacing: 0.125rem;
+    font-weight: 800;
+    transition: 0.3s;
+    margin-top: 0.3125rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    background-color: white;
+    color: #545658;
+}
+
+.accordion:hover {
+    background-color: #dee1e4;
+    box-sizing: inset 0 -3px 0 #eee;
+}
+
+.active {
+    color: #37a2e1;
+}
+
+.accordion .label::before {
+    content: "+";
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.accordion.active .label::before {
+    content: "−";
+    font-weight: bold;
+}
+
+.panel {
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.dot {
+    height: 0.5rem;
+    width: 0.5rem;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.accordion lightning-icon {
+    margin-left: auto;
+}
+
+.slds-text-title_bold {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.dropdown-menu {
+    position: absolute;
+    background: white;
+    padding: 0;
+    width: 8rem;
+    z-index: 9999;
+}
+
+.dropdown-menu button {
+    margin: 0;
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+    width: 110px;
+    border-radius: 0px;
+}
+
+/* add special dropdown background styles */
+.dropdown-menu button.priority-red {
+    background-color: #D42E2E;
+    color: black;
+}
+
+.dropdown-menu button.priority-blue {
+    background-color: #1573A0;
+    color: black;
+
+}
+
+.dropdown-menu button.priority-green {
+    background-color: #194214;
+    color: black;
+
+}
+.green{
+    color: #194214;
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+.custom-popover {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    padding: 0.625rem;
+}
+
+.custom-popover-clock {
+    position: absolute;
+    top: 2rem;
+    right: -18px;
+    padding: 10px;
+    min-width: 25rem;
+}
+
+.custom-status-popover{
+    position: absolute;
+    top: 2rem;
+    right: -1.1rem;
+    padding: 0.625rem 0.9375rem;
+    max-width: 15rem;
+}
+
+.custom-priority-popover{
+    position: absolute;
+    top: 2rem;
+    right: -3.5rem;
+    padding: 0.625rem 0.9375rem;
+    max-width: 15rem;
+}
+
+.custom-popover-date {
+    position: absolute;
+    top: 2rem;
+    left: 0;
+    padding: 10px;
+    min-width: 25rem;
+}
+
+.status-icon{
+    font-size: 1.3rem;
+}
+
+.status-icon:hover{
+    color: #6dc762
+}
+
+.badge-notify {
+    position: absolute;
+    top: -0.5rem;        /* adjust vertical position */
+    right: -0.5rem;      /* adjust horizontal position */
+    background: #D42E2E; /* red background */
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 600;
+    border-radius: 50%;
+    padding: 0 5px;   /* makes it circular for 1–2 digit numbers */
+    line-height: 16px;
+    height: 1rem;
+    width: 1rem;
+    text-align: center;
+}

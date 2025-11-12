@@ -1,0 +1,187 @@
+<template>
+    <div class="my-work-list-container">
+        <!-- Header Section -->
+        <div class="my-work-header">
+            <!-- Work Items Count -->
+            <div class="work-count-section">
+                <div class="work-count-icon"></div>
+                <div class="work-count-text">
+                    {labels.workItems} ({totalWorkItems})
+                </div>
+            </div>
+
+            <!-- Date Range Selector -->
+            <div class="date-range-section" onclick={handleDateRangeClick}>
+                <div class="date-label">{labels.date}</div>
+                <div class="from-date">
+                    {labels.from} <span class="date-value">{fromDate}</span>
+                </div>
+                <div class="to-date">
+                    {labels.to} <span class="date-value">{toDate}</span>
+                </div>
+            </div>
+
+            <!-- See Tasks Toggle -->
+            <lightning-input
+                type="checkbox"
+                label={labels.seeTasks}
+                checked={showTasks}
+                onchange={handleTaskToggle}
+                class="task-toggle">
+            </lightning-input>
+
+            <!-- Filter/Sort Dropdown -->
+            <lightning-combobox
+                name="workFilter"
+                label={labels.sortBy}
+                value={selectedFilter}
+                placeholder="Select Filter"
+                options={filterOptions}
+                onchange={handleFilterChange}
+                class="work-filter">
+            </lightning-combobox>
+        </div>
+
+        <!-- Work Items List (Accordion) -->
+        <div class="work-items-list">
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </template>
+
+            <template if:false={isLoading}>
+                <template if:true={hasWorkItems}>
+                    <template for:each={groupedWorkItems} for:item="group">
+                        <div key={group.id} class="work-group">
+                            <!-- Group Header -->
+                            <div
+                                class={group.headerClass}
+                                style={group.headerStyle}
+                                onclick={handleGroupToggle}
+                                data-group-id={group.id}>
+                                <div class="group-name">
+                                    {group.expandIcon} {group.displayName} ({group.childCount})
+                                </div>
+                                <div class={group.arrowClass}></div>
+                            </div>
+
+                            <!-- Group Items (visible when expanded) -->
+                            <template if:true={group.expanded}>
+                                <template for:each={group.items} for:item="item">
+                                    <div
+                                        key={item.Id}
+                                        class="work-item"
+                                        onclick={handleItemClick}
+                                        data-item-id={item.Id}>
+
+                                        <!-- Item Header Info -->
+                                        <ul class="item-info-header">
+                                            <li class="item-type">{item.displayItemType}</li>
+                                            <template if:true={item.ProjectRoomName}>
+                                                <li class="link-name">
+                                                    <span class="project-icon" title={item.ProjectRoomName}>
+                                                        {item.ProjectRoomName}
+                                                    </span>
+                                                </li>
+                                            </template>
+                                            <template if:true={item.ValueStreamName}>
+                                                <li class="link-name">
+                                                    <span class={item.valueStreamIconClass} title={item.ValueStreamName}>
+                                                        {item.displayValueStreamName}
+                                                    </span>
+                                                </li>
+                                            </template>
+                                            <template if:true={item.WhatName}>
+                                                <li class="link-name">
+                                                    <span class="card-icon" title={item.WhatName}>
+                                                        {item.WhatName}
+                                                    </span>
+                                                </li>
+                                            </template>
+                                        </ul>
+
+                                        <!-- Item Details -->
+                                        <ul class="item-details">
+                                            <!-- Item Name -->
+                                            <li class="item-name" title={item.fullTitle}>
+                                                <span class="name-text">{item.Name}</span>
+                                                <!-- Stickers (for non-task items) -->
+                                                <template if:true={item.hasStickers}>
+                                                    <span class="stickers">
+                                                        <template for:each={item.stickerImages} for:item="sticker">
+                                                            <img key={sticker.id} src={sticker.url} alt="Sticker" class="sticker-img"/>
+                                                        </template>
+                                                    </span>
+                                                </template>
+                                            </li>
+
+                                            <!-- Priority Indicator -->
+                                            <li class={item.priorityClass} title={item.priorityText}></li>
+
+                                            <!-- Checkbox (Complete/Incomplete) -->
+                                            <li
+                                                class={item.checkboxClass}
+                                                title={item.checkboxTitle}
+                                                onclick={handleMarkComplete}
+                                                data-item-id={item.Id}>
+                                            </li>
+
+                                            <!-- Harvey Ball (Progress Indicator) for Activities/Milestones -->
+                                            <template if:true={item.showHarveyBall}>
+                                                <li class={item.harveyBallClass} title={item.progressText}></li>
+                                            </template>
+
+                                            <!-- Task Status (for Tasks) -->
+                                            <template if:true={item.isTask}>
+                                                <li class="task-status" title={item.Status}>
+                                                    {item.displayStatus}
+                                                </li>
+                                            </template>
+
+                                            <!-- Quick Actions -->
+                                            <template if:false={item.isTask}>
+                                                <li class="quick-action-icon" title={labels.quickActions}></li>
+
+                                                <!-- Files Count -->
+                                                <li class="files-icon" title={labels.files}>
+                                                    <template if:true={item.hasFiles}>
+                                                        <span class="badge-count">{item.filesCount}</span>
+                                                    </template>
+                                                </li>
+
+                                                <!-- Log Time -->
+                                                <li class="log-time-icon" title={labels.logTime}></li>
+                                            </template>
+
+                                            <!-- Spacing for tasks -->
+                                            <template if:true={item.isTask}>
+                                                <li class="task-spacer"></li>
+                                            </template>
+
+                                            <!-- Chatter/Comments Count -->
+                                            <li class="chatter-icon">
+                                                <template if:true={item.hasComments}>
+                                                    <span class="badge-count">{item.ChatterCount}</span>
+                                                </template>
+                                            </li>
+
+                                            <!-- Due Date -->
+                                            <li class="due-date" title={item.dateTooltip}>
+                                                {item.formattedDueDate}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </template>
+                            </template>
+                        </div>
+                    </template>
+                </template>
+
+                <template if:false={hasWorkItems}>
+                    <div class="no-items-message">
+                        <p>{labels.noWorkItems}</p>
+                    </div>
+                </template>
+            </template>
+        </div>
+    </div>
+</template>

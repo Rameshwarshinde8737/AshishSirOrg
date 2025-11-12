@@ -1,0 +1,334 @@
+<template>
+    <div class="work-item"
+         data-id={item.id}
+         onclick={handleItemClick}
+         onkeydown={handleItemKeyDown}
+         role="button"
+         tabindex="0"
+         aria-label={workItemLabel}>
+        <div class="item-content">
+            <!-- Left Section -->
+            <div class="item-left">
+                <!-- Top Row: Badge and Metadata -->
+                <div class="item-left-top-row">
+                    <!-- Item Type Badge - NOT Clickable per requirements -->
+                    <span class="item-type-badge" role="status" aria-label={itemTypeAriaLabel}>{itemTypeLabel}</span>
+
+                    <!-- Project/Board Info - Clickable -->
+                    <template if:true={item.projectName}>
+                        <div class="item-project">
+                            <button class="link-button"
+                                    title={projectTooltip}
+                                    aria-label={projectAriaLabel}
+                                    onclick={handleProjectClick}>
+                                <lightning-icon icon-name="custom:custom14" size="xx-small" aria-hidden="true"></lightning-icon>
+                                <span class="link-text">{item.projectName}</span>
+                            </button>
+                        </div>
+                    </template>
+
+                    <template if:true={item.valueStreamName}>
+                        <div class="item-board">
+                            <button class="link-button"
+                                    title={boardTooltip}
+                                    aria-label={boardAriaLabel}
+                                    onclick={handleBoardClick}>
+                                <lightning-icon icon-name={boardIconName}
+                                              size="xx-small"
+                                              aria-hidden="true">
+                                </lightning-icon>
+                                <span class="link-text">{item.valueStreamName}</span>
+                            </button>
+                        </div>
+                    </template>
+
+                    <template if:true={item.whatName}>
+                        <div class="item-what">
+                            <button class="link-button"
+                                    title={whatTooltip}
+                                    aria-label={whatAriaLabel}
+                                    onclick={handleWhatClick}>
+                                <lightning-icon icon-name="custom:custom19" size="xx-small" aria-hidden="true"></lightning-icon>
+                                <span class="link-text">{item.whatName}</span>
+                            </button>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Bottom Row: Item Name -->
+                <div class="item-left-bottom-row">
+                    <button class="item-name-button"
+                            title={itemNameTooltip}
+                            aria-label={itemNameAriaLabel}
+                            onclick={handleItemNameClick}>
+                        <span class="item-name">{item.name}</span>
+                    </button>
+
+                    <!-- Stickers -->
+                    <template if:true={item.stickers.length}>
+                        <div class="item-stickers">
+                            <template for:each={item.stickers} for:item="sticker">
+                                <span key={sticker.Id} class="sticker-icon" title={sticker.Name}>S</span>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Center Section - Removed, content moved to left section -->
+            <div class="item-center">
+                <!-- Empty spacer for layout -->
+            </div>
+
+            <!-- Right Section - Status & Icons -->
+            <div class="item-right">
+                <!-- Priority for Tasks -->
+                <template if:true={isTask}>
+                    <div class={taskPriorityClass} title={item.taskPriority} role="status" aria-label={taskPriorityAriaLabel}>
+                        <lightning-icon icon-name="utility:priority" size="xx-small" aria-hidden="true"></lightning-icon>
+                    </div>
+                </template>
+
+                <!-- Priority for Cards/Activities - Clickable with Dropdown -->
+                <!-- Pattern from UpdatedMyWorkLWCCode 1/myWorkItems -->
+                <template if:false={isTask}>
+                    <div class="slds-is-relative">
+                        <button class={priorityClass}
+                                title={priorityTitle}
+                                aria-label={priorityAriaLabel}
+                                data-type="dropdown"
+                                data-id={item.id}
+                                onclick={handlePriorityClick}>
+                        </button>
+
+                        <!-- Priority Dropdown Menu -->
+                        <template if:true={isDropdownOpen}>
+                            <div class="dropdown-menu slds-m-top_x-small" style={popoverStyle}>
+                                <button class="priority-green slds-button slds-button_reset pointer"
+                                        onclick={handleUpdatePriority}
+                                        data-id={item.id}
+                                        data-value="Low">
+                                    Low
+                                </button>
+                                <button class="priority-blue slds-button slds-button_reset pointer"
+                                        onclick={handleUpdatePriority}
+                                        data-id={item.id}
+                                        data-value="Medium">
+                                    Medium
+                                </button>
+                                <button class="priority-red slds-button slds-button_reset pointer"
+                                        onclick={handleUpdatePriority}
+                                        data-id={item.id}
+                                        data-value="Critical">
+                                    Critical
+                                </button>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+
+                <!-- Checkbox - Clickable Mark as Done -->
+                <button class={checkboxClass}
+                        title={checkboxTitle}
+                        aria-label={checkboxAriaLabel}
+                        onclick={handleMarkDoneToggle}>
+                    <template if:true={isCompleted}>
+                        <span class="icon-round-check-checked"></span>
+                    </template>
+                    <template if:false={isCompleted}>
+                        <span class="icon-circle-check"></span>
+                    </template>
+                </button>
+
+                <!-- Harvey Ball or Task Status -->
+                <template if:true={isTask}>
+                    <span class="task-status" role="status" aria-label={taskStatusAriaLabel}>{taskStatusLabel}</span>
+                </template>
+
+                <template if:false={isTask}>
+                    <div class="harvey-ball-container">
+                        <button class={harveyBallClass}
+                                title={item.harveyBall}
+                                aria-label={harveyBallAriaLabel}
+                                onclick={handleHarveyBallClick}>
+                            <!-- Show current Harvey Ball icon -->
+                            <span class={currentHarveyBallIcon}></span>
+                        </button>
+
+                        <!-- Harvey Ball Popover -->
+                        <template if:true={showHarveyBallPopover}>
+                            <div class="popover-container harvey-ball-popover" style={popoverStyle} onclick={stopPropagation}>
+                                <div class="popover-content">
+                                    <div class="popover-header">{selectStatusLabel}</div>
+                                    <div class="harvey-ball-options">
+                                        <template for:each={harveyBallOptions} for:item="option">
+                                            <button key={option.value}
+                                                    class="harvey-ball-option"
+                                                    data-value={option.value}
+                                                    onclick={handleHarveyBallSelect}>
+                                                <span class={option.icon}></span>
+                                                <span>{option.value}%</span>
+                                            </button>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+
+                <!-- Lightning Bolt Icon (Quick Action) -->
+                <template if:false={isTask}>
+                    <button class="lightning-action-btn"
+                            title={quickActionLabel}
+                            aria-label={quickActionLabel}
+                            onclick={handleLightningAction}>
+                        <lightning-icon icon-name="utility:lightning_bolt"
+                                      size="xx-small"
+                                      aria-hidden="true">
+                        </lightning-icon>
+                    </button>
+                </template>
+
+                <!-- Files Count - Clickable with Modal -->
+                <!-- Pattern from UpdatedMyWorkLWCCode 1/myWorkItems -->
+                <template if:false={isTask}>
+                    <div class="slds-is-relative" style="display:inline-block;">
+                        <button class="files-count" title={filesLabel} aria-label={filesAriaLabel} onclick={handleFileClick}>
+                            <lightning-icon icon-name="utility:attach" size="xx-small" aria-hidden="true"></lightning-icon>
+                            <template if:true={showFilesCount}>
+                                <span>{item.filesCount}</span>
+                            </template>
+                        </button>
+                        <!-- File Upload Modal -->
+                        <c-leankor-file-upload if:true={isFileUploadModalOpen}
+                                             item-id={item.id}
+                                             item-name={item.name}
+                                             onclose={closeFileUploadModal}>
+                        </c-leankor-file-upload>
+                    </div>
+                </template>
+
+                <!-- Log Time Icon - Clickable with Popover -->
+                <template if:false={isTask}>
+                    <div class="time-log-container">
+                        <button class="log-time-btn"
+                                title={logTimeButtonLabel}
+                                aria-label={logTimeButtonLabel}
+                                onclick={handleTimeLogClick}>
+                            <lightning-icon icon-name="utility:clock" size="xx-small" aria-hidden="true"></lightning-icon>
+                        </button>
+
+                        <!-- Time Log Popover -->
+                        <template if:true={showTimeLogPopover}>
+                            <section class="slds-popover slds-nubbin_top-right time-log-popover"
+                                     style={popoverStyle}
+                                     role="dialog"
+                                     aria-label={logTimeLabel}
+                                     onclick={stopPropagation}>
+                                <div class="slds-grid slds-wrap slds-gutters">
+                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                        <lightning-input type="date"
+                                                        label={dateLabel}
+                                                        name="logDate"
+                                                        value={logDate}
+                                                        onchange={handleTimeLogChange}
+                                                        required
+                                                        aria-required="true">
+                                        </lightning-input>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                        <lightning-input type="number"
+                                                        label={loggedTimeLabel}
+                                                        name="logTime"
+                                                        value={logTime}
+                                                        min="0"
+                                                        step="0.1"
+                                                        onchange={handleTimeLogChange}
+                                                        required
+                                                        aria-required="true">
+                                        </lightning-input>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                        <lightning-combobox label={durationLabel}
+                                                           name="logDuration"
+                                                           value={logDuration}
+                                                           options={durationOptions}
+                                                           onchange={handleTimeLogChange}
+                                                           required
+                                                           aria-required="true">
+                                        </lightning-combobox>
+                                    </div>
+                                    <!-- Full width description textarea -->
+                                    <div class="slds-col slds-size_1-of-1">
+                                        <lightning-textarea label={descriptionLabel}
+                                                           name="logDescription"
+                                                           value={logDescription}
+                                                           onchange={handleTimeLogChange}
+                                                           aria-label={descriptionLabel}>
+                                        </lightning-textarea>
+                                    </div>
+                                </div>
+                                <!-- Action buttons -->
+                                <div class="slds-grid slds-grid_align-end slds-m-top_small" role="group" aria-label="Dialog actions">
+                                    <lightning-button variant="neutral"
+                                                      label={cancelLabel}
+                                                      onclick={handleTimeLogCancel}>
+                                    </lightning-button>
+                                    <lightning-button class="slds-m-left_small"
+                                                      variant="brand"
+                                                      label={saveLabel}
+                                                      onclick={handleTimeLogSave}>
+                                    </lightning-button>
+                                </div>
+                            </section>
+                        </template>
+                    </div>
+                </template>
+
+                <!-- Chatter Count - Clickable -->
+                <template if:false={isTask}>
+                    <button class="chatter-count" title={commentsLabel} aria-label={chatterAriaLabel} onclick={handleChatterClick}>
+                        <lightning-icon icon-name="utility:comments" size="xx-small" aria-hidden="true"></lightning-icon>
+                        <template if:true={showChatterCount}>
+                            <span>{item.chatterCount}</span>
+                        </template>
+                    </button>
+                </template>
+
+                <!-- Due Date - Clickable with Date Picker Popover -->
+                <div class="due-date-container">
+                    <button class="due-date" title={item.dueDate} aria-label={dueDateAriaLabel} onclick={handleDateClick}>
+                        <span>{formattedDueDate}</span>
+                    </button>
+
+                    <!-- Date Picker Popover -->
+                    <template if:true={showDatePopover}>
+                        <div class="popover-container date-popover" style={popoverStyle} onclick={stopPropagation}>
+                            <div class="popover-content">
+                                <div class="popover-header">{updateDatesLabel}</div>
+                                <div class="date-form">
+                                    <lightning-input type="date"
+                                                    label={startDateLabel}
+                                                    name="startDate"
+                                                    value={startDate}
+                                                    onchange={handleDateChange}>
+                                    </lightning-input>
+                                    <lightning-input type="date"
+                                                    label={dueDateLabel}
+                                                    name="dueDate"
+                                                    value={dueDate}
+                                                    onchange={handleDateChange}>
+                                    </lightning-input>
+                                    <div class="popover-actions">
+                                        <button class="btn-save" onclick={handleDateSave}>{saveLabel}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

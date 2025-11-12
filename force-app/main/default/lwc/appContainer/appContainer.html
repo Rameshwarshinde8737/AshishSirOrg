@@ -1,0 +1,25 @@
+<template>
+    <div class="app-container slds-grid slds-gutters slds-is-relative">
+        <!-- Sidebar -->
+
+        <c-navigation-container onopenvf={handleOpenVF} is-visible={isSidebarVisible} folders={folders} 
+            onfolderaction={handleAction} onopenportfolio={handleOpenPortfolio}   onmovefolderproject={handleMoveFolderProject} folders-for-move={foldersForMove}>
+        </c-navigation-container>
+
+
+        <button class={toggleButtonClass} onclick={toggleSidebarVisibility}><span class={toggleIconName}></span></button>
+
+        <!-- Main Content -->
+        <div class="main-container">
+            <template if:true={isMyWork}>
+                <c-my-work-items record-id={recordId} onopenvf={handleOpenVF}></c-my-work-items>
+            </template>
+            <template if:true={isPortfolioPage}>
+                <c-portfolio folders={folders}  onfolderaction={handleAction}></c-portfolio>
+            </template>
+            <template if:true={isVFPage}>
+                <iframe src={vfUrl} width="100%" height="100%" frameborder="0"></iframe>
+            </template>
+        </div>
+    </div>
+</template>

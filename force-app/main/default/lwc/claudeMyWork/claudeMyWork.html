@@ -1,0 +1,10 @@
+<template>
+    <div class="my-work-container">
+        <lightning-tabset variant="scoped" class="my-work-tabset">
+            <lightning-tab label={labels.myWorkItems} value="myWorkItems">
+                <c-claude-my-work-list></c-claude-my-work-list>
+            </lightning-tab>
+            <!-- Additional tabs can be added here (Calendar, Files, etc.) -->
+        </lightning-tabset>
+    </div>
+</template>

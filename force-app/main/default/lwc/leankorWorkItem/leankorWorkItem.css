@@ -1,0 +1,844 @@
+/* ADA Compliant - Using REM units for scalability */
+.work-item {
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border: 2px solid transparent;
+    outline: none;
+}
+
+.work-item:hover,
+.work-item:focus,
+.work-item:focus-within {
+    background-color: #f9f9f9;
+    outline: none;
+}
+
+.work-item:focus,
+.work-item:focus-within {
+    border-color: #0070d2;
+}
+
+.item-content {
+    display: flex;
+    align-items: flex-start; /* Changed from center to flex-start for better alignment */
+    padding: 0.5rem 0.625rem; /* 8px 10px - Compact */
+    gap: 1rem; /* 16px - increased for better spacing */
+}
+
+.item-left {
+    display: flex;
+    flex-direction: column; /* Column layout for top and bottom rows */
+    gap: 0.25rem; /* 4px between rows */
+    flex: 1;
+    min-width: 0;
+}
+
+.item-left-top-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem; /* 12px - increased from 8px for better separation */
+    flex-wrap: nowrap;
+}
+
+.item-left-bottom-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* 8px */
+    margin-left: 0; /* Align with left edge */
+    padding-left: 0;
+}
+
+.item-type-badge {
+    display: inline-block;
+    font-size: 0.625rem; /* 10px - Compact */
+    line-height: 0.875rem; /* 14px */
+    font-weight: 700;
+    padding: 0.125rem 0.375rem; /* 2px 6px - Compact */
+    background-color: #e0e5ee;
+    color: #3e3e3c;
+    border-radius: 0.125rem; /* 2px */
+    text-transform: uppercase;
+    letter-spacing: 0.025rem; /* 0.4px */
+    width: fit-content;
+    margin-right: 0.25rem; /* 4px - extra space after badge */
+}
+
+.item-project,
+.item-board,
+.item-what {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem; /* 4px */
+    font-size: 0.6875rem; /* 11px - Compact */
+    line-height: 0.875rem; /* 14px */
+    color: #706e6b;
+    white-space: nowrap;
+    padding-right: 0.25rem; /* 4px - extra spacing on the right */
+}
+
+.item-project span,
+.item-board span,
+.item-what span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 8rem; /* Limit width to prevent overflow */
+}
+
+.item-center {
+    flex: 0; /* No longer takes space */
+    min-width: 0;
+}
+
+.item-name-section {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* 8px */
+}
+
+.item-name {
+    font-size: 0.75rem; /* 12px - Normal */
+    line-height: 1rem; /* 16px */
+    color: #3e3e3c;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 15rem; /* 240px - prevent overflow */
+}
+
+.item-stickers {
+    display: flex;
+    gap: 0.25rem; /* 4px */
+}
+
+.sticker-icon {
+    display: inline-block;
+    width: 1.375rem; /* 22px */
+    height: 1.375rem; /* 22px */
+    background-color: #ffd700;
+    border-radius: 0.1875rem; /* 3px */
+    text-align: center;
+    line-height: 1.375rem; /* 22px */
+    font-size: 0.6875rem; /* 11px */
+    font-weight: 700;
+}
+
+.item-right {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem; /* 10px - increased from 8px to prevent overlap */
+    margin-left: auto; /* Push to the right */
+    padding-left: 1.25rem; /* 20px - increased from 16px for more space */
+    padding-right: 0.75rem; /* 12px - increased from 8px for safety */
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+/* Priority Classes - Match existing ExtJS app colors */
+.priority-critical,
+.priority-1 {
+    color: #D42E2E; /* Red - Critical */
+    width: 1.25rem; /* 20px - standardized */
+    height: 1.25rem; /* 20px */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.priority-medium,
+.priority-2 {
+    color: #1573A0; /* Blue - Medium */
+    width: 1.25rem; /* 20px - standardized */
+    height: 1.25rem; /* 20px */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.priority-low,
+.priority-3 {
+    color: #194214; /* Green - Low */
+    width: 1.25rem; /* 20px - standardized */
+    height: 1.25rem; /* 20px */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.priority-none {
+    color: #a8a8a8;
+    width: 1.25rem; /* 20px - standardized */
+    height: 1.25rem; /* 20px */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Checkbox */
+.checkbox {
+    width: 1.25rem; /* 20px - increased for better icon fit */
+    height: 1.25rem; /* 20px */
+    border: 2px solid #d8dde6;
+    border-radius: 50%; /* Perfect circle */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    overflow: hidden; /* Prevent color bleeding outside */
+    background: transparent;
+    padding: 0;
+}
+
+.checkbox.checked {
+    background-color: transparent; /* Remove background, use icon color instead */
+    border-color: #4bca81;
+}
+
+.checkbox.checked .icon-round-check-checked {
+    color: #4bca81;
+    font-size: 1.25rem; /* 20px - match container size */
+}
+
+.checkbox .icon-circle-check {
+    color: #d8dde6;
+    font-size: 1.25rem; /* 20px - match container size */
+}
+
+/* Harvey Ball */
+.harvey-ball-0,
+.harvey-ball-25,
+.harvey-ball-50,
+.harvey-ball-75,
+.harvey-ball-100 {
+    width: 1.25rem; /* 20px - same as checkbox */
+    height: 1.25rem; /* 20px */
+    border-radius: 50%;
+    border: none; /* Remove border to use icon only */
+    position: relative;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+}
+
+.harvey-ball-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: #4bca81;
+    transition: width 0.3s;
+}
+
+.harvey-ball-0 .harvey-ball-fill {
+    width: 0%;
+}
+
+.harvey-ball-25 .harvey-ball-fill {
+    width: 25%;
+}
+
+.harvey-ball-50 .harvey-ball-fill {
+    width: 50%;
+}
+
+.harvey-ball-75 .harvey-ball-fill {
+    width: 75%;
+}
+
+.harvey-ball-100 .harvey-ball-fill {
+    width: 100%;
+}
+
+.task-status {
+    font-size: 0.6875rem; /* 11px - Compact */
+    line-height: 0.875rem; /* 14px */
+    font-weight: 600;
+    color: #706e6b;
+    padding: 0;
+    background: transparent; /* No background to match ExtJS */
+    white-space: nowrap;
+}
+
+.lightning-action-btn,
+.log-time-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    transition: opacity 0.2s;
+    color: #706e6b;
+    width: 1.5rem; /* 24px - standardized button width */
+    height: 1.5rem; /* 24px - standardized button height */
+    display: inline-flex !important; /* Force display */
+    align-items: center;
+    justify-content: center;
+    visibility: visible !important; /* Ensure visibility */
+    opacity: 1; /* Full opacity by default */
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.lightning-action-btn:hover,
+.log-time-btn:hover {
+    opacity: 0.7;
+}
+
+.lightning-action-btn:focus,
+.log-time-btn:focus {
+    outline: 2px solid #0070d2;
+    outline-offset: 0.125rem; /* 2px */
+    border-radius: 0.25rem; /* 4px */
+}
+
+/* Standardize lightning-icon sizes */
+.lightning-action-btn lightning-icon,
+.log-time-btn lightning-icon,
+.files-count lightning-icon,
+.chatter-count lightning-icon {
+    width: 1rem; /* 16px - standardized icon size */
+    height: 1rem; /* 16px */
+}
+
+.files-count,
+.chatter-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem; /* 4px */
+    font-size: 0.6875rem; /* 11px - Compact */
+    line-height: 0.875rem; /* 14px */
+    color: #706e6b;
+    padding: 0.25rem; /* 4px - Consistent padding */
+    padding-right: 0.5rem; /* 8px - extra right padding for spacing */
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    min-width: 1.5rem; /* 24px - same as other buttons */
+    min-height: 1.5rem; /* 24px */
+    justify-content: center;
+}
+
+/* Remove background when count is shown - keep consistent */
+.files-count:has(span),
+.chatter-count:has(span) {
+    padding: 0.25rem;
+    background: transparent; /* Keep consistent - no background */
+    border-radius: 0;
+}
+
+.due-date {
+    font-size: 0.6875rem; /* 11px - Compact */
+    line-height: 0.875rem; /* 14px */
+    color: #3e3e3c;
+    background: transparent;
+    border: none;
+    padding: 0.25rem;
+    padding-left: 1rem; /* 16px - extra left padding for spacing from chatter */
+    cursor: pointer;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.due-date:hover {
+    opacity: 0.7;
+}
+
+/* ADA Contrast Fixes - Improved hover and focus states */
+/* Enhanced hover background for better visual feedback */
+.work-item:hover,
+.work-item:focus {
+    background-color: #f4f6f9; /* Slightly darker for better contrast */
+}
+
+/* Improved focus-visible state */
+.work-item:focus-visible {
+    outline: 3px solid #0070d2;
+    outline-offset: 2px;
+    background-color: #f4f6f9;
+}
+
+/* Ensure secondary text has sufficient contrast */
+.item-project,
+.item-board,
+.item-what {
+    color: #565f64; /* Darker gray for better readability (was #706e6b) */
+}
+
+/* Ensure badge backgrounds have good contrast */
+.item-type-badge {
+    background-color: #d8dde6; /* Slightly darker for better contrast (was #e0e5ee) */
+    color: #2e2e2c; /* Darker text */
+}
+
+/* Task status with improved contrast - no background needed */
+.task-status {
+    color: #3e3e3c; /* Darker text for better contrast */
+}
+
+/* Files and chatter count badges - hover states */
+.files-count:hover,
+.chatter-count:hover {
+    opacity: 0.7;
+}
+
+/* Keep consistent - no background on hover */
+.files-count:has(span):hover,
+.chatter-count:has(span):hover {
+    background: transparent;
+    opacity: 0.7;
+}
+
+/* Interactive Elements Styling */
+
+.priority-container button,
+.harvey-ball-container button,
+.checkbox,
+.due-date-container button,
+.time-log-container button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.2s;
+    width: 1.25rem; /* 20px - standardized */
+    height: 1.25rem; /* 20px */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.priority-container button:hover,
+.harvey-ball-container button:hover,
+.checkbox:hover,
+.due-date-container button:hover,
+.time-log-container button:hover {
+    opacity: 0.7;
+}
+
+/* Ensure priority container itself has no extra styling */
+.priority-container,
+.harvey-ball-container,
+.due-date-container {
+    display: inline-flex;
+    align-items: center;
+}
+
+.time-log-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Popover Base Styles */
+.popover-container {
+    background: #ffffff;
+    border-radius: 0.25rem;
+    box-shadow: 0 0.1875rem 0.75rem rgba(0, 0, 0, 0.15);
+    min-width: 12rem;
+    max-width: 20rem;
+}
+
+/* Harvey Ball Popover - wider for horizontal layout */
+.harvey-ball-popover {
+    min-width: 17.5rem; /* 280px - accommodate horizontal icons */
+    max-width: 20rem; /* 320px */
+    padding: 0.5rem; /* 8px - compact padding */
+}
+
+.popover-content {
+    padding: 0.625rem; /* 10px - Compact */
+}
+
+.popover-header {
+    font-size: 0.75rem; /* 12px - Compact */
+    font-weight: 700;
+    color: #2e2e2c;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.375rem;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.popover-actions {
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.375rem;
+}
+
+.btn-save {
+    background: #0070d2;
+    color: #ffffff;
+    border: none;
+    border-radius: 0.1875rem;
+    padding: 0.375rem 0.75rem; /* 6px 12px - Compact */
+    font-size: 0.6875rem; /* 11px - Compact */
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-save:hover {
+    background: #005fb2;
+}
+
+/* Priority Popover Styles */
+.priority-popover .priority-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.priority-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.625rem; /* 8px 10px - Compact */
+    border: 1px solid #e8e8e8;
+    border-radius: 0.1875rem;
+    background: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.6875rem; /* 11px - Compact */
+}
+
+.priority-option:hover {
+    background: #f4f6f9;
+    border-color: #0070d2;
+}
+
+.priority-option.priority-critical {
+    border-left: 0.25rem solid #D42E2E;
+}
+
+.priority-option.priority-critical .icon-star-full1 {
+    color: #D42E2E;
+}
+
+.priority-option.priority-medium {
+    border-left: 0.25rem solid #1573A0;
+}
+
+.priority-option.priority-medium .icon-star-full1 {
+    color: #1573A0;
+}
+
+.priority-option.priority-low {
+    border-left: 0.25rem solid #194214;
+}
+
+.priority-option.priority-low .icon-star-full1 {
+    color: #194214;
+}
+
+/* Harvey Ball Popover Styles */
+.harvey-ball-popover .harvey-ball-options {
+    display: flex;
+    flex-direction: row; /* Horizontal layout */
+    gap: 0.75rem; /* 12px - spacing between icons */
+    justify-content: center;
+    padding: 0.25rem 0; /* Vertical padding only */
+}
+
+.harvey-ball-option {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.375rem; /* 6px - compact padding */
+    border: 2px solid transparent;
+    border-radius: 50%; /* Circular button */
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 2rem; /* 32px - consistent size */
+    height: 2rem; /* 32px */
+}
+
+.harvey-ball-option:hover {
+    background: #f4f6f9;
+    border-color: #0070d2;
+}
+
+.harvey-ball-option:focus {
+    outline: 2px solid #0070d2;
+    outline-offset: 2px;
+}
+
+/* Icon styling */
+.harvey-ball-option span:first-child {
+    font-size: 1.5rem; /* 24px - larger for better visibility */
+}
+
+/* Hide percentage text */
+.harvey-ball-option span:last-child {
+    display: none; /* Hide percentage text */
+}
+
+/* Harvey Ball icon colors - consistent dark gray */
+.harvey-ball-option .icon-uniA3C {
+    color: #d8dde6; /* 0% - light gray */
+}
+
+.harvey-ball-option .icon-uniA3D {
+    color: #3e3e3c; /* 25% - dark gray */
+}
+
+.harvey-ball-option .icon-uniA3E {
+    color: #3e3e3c; /* 50% - dark gray */
+}
+
+.harvey-ball-option .icon-uniA3F {
+    color: #3e3e3c; /* 75% - dark gray */
+}
+
+.harvey-ball-option .icon-uniA40 {
+    color: #3e3e3c; /* 100% - dark gray */
+}
+
+/* Date Picker Popover */
+.date-popover .date-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+/* Time Log Popover */
+.time-log-popover {
+    min-width: 28rem; /* 448px - Wide enough for 3 columns */
+    max-width: 40rem; /* 640px - Maximum width */
+}
+
+.time-log-popover .slds-popover__body {
+    padding: 1rem; /* 16px */
+}
+
+/* Ensure proper spacing for form fields */
+.time-log-popover lightning-input,
+.time-log-popover lightning-combobox,
+.time-log-popover lightning-textarea {
+    display: block;
+}
+
+
+
+/* SLDS Popover Overflow Handling */
+.slds-popover {
+    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.2);
+    border: 1px solid #d8dde6;
+    border-radius: 0.25rem;
+    background: #ffffff;
+}
+
+.slds-popover.time-log-popover {
+    overflow: visible; /* Allow dropdowns to extend outside */
+}
+
+.slds-popover.time-log-popover .slds-popover__body {
+    overflow-y: auto; /* Enable scroll if content is too tall */
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Custom Icon Font Classes */
+[class^="icon-"],
+[class*=" icon-"] {
+    display: inline-block;
+    font-family: 'leankor-icons';
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-star-full1 {
+    font-size: 1.125rem; /* 18px - standardized */
+}
+
+.icon-round-check-checked,
+.icon-circle-check {
+    font-size: 1.25rem; /* 20px - standardized to match container */
+}
+
+/* Harvey ball icons - standardized */
+.icon-uniA3C,
+.icon-uniA3D,
+.icon-uniA3E,
+.icon-uniA3F,
+.icon-uniA40 {
+    font-size: 1.25rem; /* 20px - standardized */
+}
+
+/* Priority Classes with Icon Colors */
+.priority-critical .icon-star-full1 {
+    color: #c23934;
+}
+
+.priority-medium .icon-star-full1 {
+    color: #d97706;
+}
+
+.priority-low .icon-star-full1 {
+    color: #2e844a;
+}
+
+.priority-none .icon-star-full1 {
+    color: #9a9b9c;
+}
+
+/* Checkbox States */
+.checkbox {
+    color: #9a9b9c;
+}
+
+.checkbox.checked {
+    color: #2e844a;
+}
+
+/* Clickable Link Buttons - ADA Compliant */
+.link-button,
+.item-name-button {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem; /* 4px */
+    text-decoration: none;
+    transition: opacity 0.2s;
+    font-size: inherit;
+    color: inherit;
+    outline: none;
+}
+
+.link-button:hover,
+.item-name-button:hover {
+    opacity: 0.7;
+    text-decoration: underline;
+}
+
+.link-button:focus,
+.item-name-button:focus {
+    outline: 2px solid #0070d2;
+    outline-offset: 0.125rem; /* 2px */
+    border-radius: 0.125rem; /* 2px */
+}
+
+.link-button:active,
+.item-name-button:active {
+    opacity: 0.5;
+}
+
+.link-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.item-name-button {
+    justify-content: flex-start;
+    width: auto; /* Changed from 100% to auto */
+    max-width: 100%;
+}
+
+.item-name-button .item-name {
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.item-name-button:hover .item-name {
+    color: #0070d2;
+}
+
+.item-left-bottom-row .item-name-button {
+    padding: 0; /* Remove padding in left section */
+    margin: 0;
+}
+
+/* Ensure proper icon alignment in link buttons */
+.link-button lightning-icon,
+.item-name-button lightning-icon {
+    flex-shrink: 0;
+}
+
+/* ==================== PRIORITY DROPDOWN STYLES (from UpdatedMyWorkLWCCode 1) ==================== */
+
+/* Priority button colors */
+.priority-red {
+    color: #D42E2E;
+}
+
+.priority-blue {
+    color: #1573A0;
+}
+
+.priority-green {
+    color: #194214;
+}
+
+/* Dropdown menu container */
+.dropdown-menu {
+    background: white;
+    border: 0.0625rem solid #d8dde6; /* 1px */
+    border-radius: 0.25rem; /* 4px */
+    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.15); /* 0 2px 8px */
+    min-width: 6.875rem; /* 110px */
+    padding: 0.625rem 0.9375rem; /* 10px 15px */
+    max-width: 15rem; /* 240px */
+}
+
+/* Dropdown menu buttons */
+.dropdown-menu button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0.5rem 0.75rem; /* 8px 12px */
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 0.8125rem; /* 13px */
+    border-radius: 0.1875rem; /* 3px */
+    transition: background-color 0.2s;
+    margin-bottom: 0.25rem; /* 4px */
+}
+
+.dropdown-menu button:hover {
+    background-color: #f4f6f9;
+}
+
+.dropdown-menu button:last-child {
+    margin-bottom: 0;
+}
+
+/* Priority button colors in dropdown */
+.dropdown-menu button.priority-red {
+    background-color: #D42E2E;
+    color: white;
+}
+
+.dropdown-menu button.priority-blue {
+    background-color: #1573A0;
+    color: white;
+}
+
+.dropdown-menu button.priority-green {
+    background-color: #194214;
+    color: white;
+}
+
+.dropdown-menu button.priority-red:hover {
+    background-color: #BB2525;
+}
+
+.dropdown-menu button.priority-blue:hover {
+    background-color: #125E85;
+}
+
+.dropdown-menu button.priority-green:hover {
+    background-color: #133611;
+}

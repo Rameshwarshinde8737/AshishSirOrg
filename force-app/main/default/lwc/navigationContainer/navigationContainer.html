@@ -1,0 +1,16 @@
+<template>
+    <div class="navigation-container">
+        <div class={sidebarWrapperClass}>
+            <template if:true={isShowFolderList}>
+                <c-sidebar folders={folders} 
+                    onfolderaction={handleFolderAction} onopenportfolio={handleOpenPortfolio} folders-for-move={foldersForMove}>
+                </c-sidebar>
+            </template>
+            
+            <template if:true={isShowBoardList}>
+                <c-board-navigation project-data={projectData} onshowfoldernav={handelShowFolderNav}>
+                </c-board-navigation>
+            </template>
+        </div>
+    </div>
+</template>

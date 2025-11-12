@@ -1,0 +1,83 @@
+.namecell {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  min-width: 0; /* keep truncation working */
+}
+.slds-dropdown.slds-hide { display: none; }
+.slds-dropdown.slds-show { display: block; }
+
+.no-wrap {
+  display: inline-flex;
+  align-items: stretch;
+  white-space: nowrap;
+}
+.no-wrap .slds-input {
+  width: 220px;
+  border-right: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.addBtn {
+  background: #60c35f;
+  border-color: #60c35f;
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  line-height: 32px;
+}
+/* .addBtn:hover,
+.addBtn:focus {
+  background: #4caf50;
+  border-color: #4caf50;
+  color: #fff;
+} */
+.slds-input:focus,
+.slds-input:focus-visible,
+.slds-button:focus,
+.slds-button:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+/* Align chevron + icon + name nicely (no extra borders) */
+.namecell {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0; /* keep truncation working */
+}
+
+/* Kill focus ring just on that bare chevron if you don't want the blue glow */
+.namecell__chev:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+.actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: 0.5rem;
+}
+.doc-icon { opacity: 0.85; }
+.row-border-wrapper {
+  border-right: 1px solid #d8dde6; /* Matches SLDS theme */
+}
+.kebab {
+  margin-left: auto;
+  cursor: pointer;
+}
+
+
+.custom-dropdown-item {
+  text-decoration: none;
+  color: #000;
+  padding: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.custom-dropdown-item:hover {
+  color: #ed6c00;
+  background-color: rgb(250, 250, 250);
+}

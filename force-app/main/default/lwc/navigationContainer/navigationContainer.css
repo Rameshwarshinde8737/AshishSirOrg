@@ -1,0 +1,16 @@
+.navigation-container {
+    display: flex;
+    height: 100%;
+    box-shadow: 5px 0 20px rgba(0, 0, 0, 0.2);
+}
+.sidebar-wrapper {
+    transition: margin-left 0.4s, opacity 0.4s;
+    width: 240px;
+    opacity: 1;
+    margin-left: 0;
+}
+
+.sidebar-wrapper.closed {
+    margin-left: -240px; /* Move sidebar outside screen */
+    opacity: 0;
+}

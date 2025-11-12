@@ -1,0 +1,183 @@
+<template>
+    <template if:true={openMoveModel}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="width: 400px;">
+                <!-- Header -->
+                <header class="slds-modal__header">
+                    <div class="headerContainer">
+                        <div class="headerTxt">Move</div>
+                        <div><span onclick={closeModal} class="icon-cross2 pointer"></span></div>
+                    </div>
+                </header>
+
+                <!-- Body -->
+                <div class="slds-modal__content slds-p-around_medium">
+                    <!-- <div class="slds-form-element "> -->
+                    <label class="slds-form-element__label">Select Folder Location</label>
+                    <!-- <div class="slds-form-element__control"> -->
+                    <!-- Readonly input acting like a combobox trigger -->
+                    <div class="picker-shell" onclick={openFolderPicker}>
+                        <div class="dropdownLabel">{selectedDestinationLabel}</div>
+                        <div class="dropdownIcon">
+                            <lightning-icon icon-name="utility:chevrondown" size="x-small"></lightning-icon>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                    <!-- </div> -->
+                </div>
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={closeMoveModal}>Cancel</button>
+                    <button class="slds-button slds-button_brand" onclick={confirmMove}
+                        disabled={isMoveDisabled}>Move</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!-- 2nd modal: folder picker -->
+    <template if:true={isPickerOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="width: 400px;">
+    
+                <!-- Header -->
+                <header class="slds-modal__header">
+                    <div class="headerContainer">
+                        <div class="headerTxt">Folder</div>
+                        <div><span onclick={closeModal} class="icon-cross2 pointer"></span></div>
+                    </div>
+                </header>
+    
+                <!-- Body -->
+                <div class="slds-modal__content slds-p-around_medium">
+                    <template if:true={filteredFolders}>
+                        <template for:each={filteredFolders} for:item="folder">
+                            <li key={folder.Id}>
+                                <c-folder-item folder={folder} from='moveModal' all-folder={allFolder} onfolderselectedformove={handleFolderSelectedForMove}></c-folder-item>
+                            </li>
+                        </template>
+                    </template>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- Clone popup -->
+    <template if:true={isShowCloneModal}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-id" 
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container clone-modal-small">
+                <!-- Header -->
+    
+                <header class="slds-modal__header">
+                    <div class="headerContainer">
+                        <div class="headerTxt">Clone Project</div>
+                        <div><span onclick={handleCancel} class="icon-cross2 pointer"></span></div>
+                    </div>
+                </header>
+    
+                <!-- Body -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id">
+                    <div class="slds-form slds-form_stacked">
+                        <!-- Project Name -->
+                        <div class="slds-form-element slds-m-bottom_small">
+                            <label class="slds-form-element__label" for="projName">Project Name</label>
+                            <div class="slds-form-element__control">
+                                <lightning-input type="text" name="projectName" data-field="projectName"
+                                    value={form.projectName} onchange={handleInput}
+                                    variant="label-hidden"></lightning-input>
+                            </div>
+                        </div>
+    
+                        <!-- Dates -->
+                        <div class="slds-form slds-form_horizontal">
+                            <!-- Project Start Date -->
+                            <div class="slds-form-element" style="display: flex;align-items: anchor-center">
+                                <label class="slds-form-element__label" for="startDate">
+                                    Project Start Date
+                                </label>
+                                <div class="slds-form-element__control input-small">
+                                    <lightning-input type="date" name="startDate" variant="label-hidden"
+                                        data-field="startDate" value={form.startDate} onchange={handleInput}>
+                                    </lightning-input>
+                                </div>
+                            </div>
+                            <!-- Or -->
+                            <div class="or-separator">
+                                <span>Or</span>
+                            </div>
+    
+                            <!-- Project Due Date -->
+                            <div class="slds-form-element" style="display: flex;align-items: anchor-center">
+                                <label class="slds-form-element__label" for="startDate">
+                                    Project Due Date
+                                </label>
+                                <div class="slds-form-element__control input-small">
+                                    <lightning-input type="date" name="startDate" variant="label-hidden"
+                                        data-field="startDate" value={form.startDate} onchange={handleInput}>
+                                    </lightning-input>
+                                </div>
+                            </div>
+                            <!-- Or -->
+                            <div class="or-separator">
+                                <span>Or</span>
+                            </div>
+    
+                            <!-- Project Due Date -->
+                            <div class="slds-form-element" style="display: flex;align-items: anchor-center">
+                                <label class="slds-form-element__label" for="startDate">
+                                    Project Lunch Date
+                                </label>
+                                <div class="slds-form-element__control input-small">
+                                    <lightning-input type="date" name="startDate" variant="label-hidden"
+                                        data-field="startDate" value={form.startDate} onchange={handleInput}>
+                                    </lightning-input>
+                                </div>
+                            </div>
+                            <!-- Or -->
+                            <div class="or-separator">
+                                <span>Or</span>
+                            </div>
+    
+                        </div>
+    
+                        <!-- Toggle Rows -->
+                        <div class="slds-m-top_medium">
+                            <template for:each={rows} for:item="row">
+                                <div key={row.key} class="row" onclick={toggleRow} data-key={row.key}
+                                    aria-pressed={row.value}>
+                                    <div class="row__label">{row.label}</div>
+                                    <div class="row__control">
+                                        <button class={row.buttonClass} title={row.title}>
+                                            <lightning-icon icon-name={row.icon} size="x-small"
+                                                alternative-text="status"></lightning-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+    
+                        <!-- Folder Location -->
+                        <div class="slds-form-element slds-m-top_medium">
+                            <label class="slds-form-element__label">Select Folder Location</label>
+                            <div class="picker-shell" onclick={openFolderPicker}>
+                                <div class="dropdownLabel">{selectedDestinationLabel}</div>
+                                <div class="dropdownIcon">
+                                    <lightning-icon icon-name="utility:chevrondown" size="x-small"></lightning-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Footer -->
+                <footer class="slds-modal__footer slds-p-around_small">
+                    <lightning-button label="Cancel" onclick={handleCancel} class="slds-m-right_small"></lightning-button>
+                    <lightning-button variant="brand" label="Clone" onclick={handleClone}
+                        disabled={disableClone}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" if:true={open}></div>
+    </template>
+</template>

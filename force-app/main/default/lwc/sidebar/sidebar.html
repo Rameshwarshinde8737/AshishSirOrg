@@ -1,0 +1,105 @@
+<template>
+    <div class="container">
+        <!-- <div class={sidebarWrapperClass}> -->
+            <!-- Show Folder & Board List Container -->
+                <!-- Show User Action & Folder List -->
+                <div class="sidebar sidebar--folder-list">
+                    <!-- 1. User profile section -->
+                    <div class="sidebar__user-section">
+                        <h1 class="sidebar__welcome-heading">welcome</h1>
+                        <div class="user-profile">
+                            <div class="slds-media__figure">
+                                <div tabindex="0" class="slds-avatar slds-avatar_circle slds-avatar_small">
+                                    <img alt="Person name" src={userSmallPhotoUrl} title="Person name" />
+                                </div>
+                            </div>
+                            <div class="slds-media__body">
+                                <p class="user-profile__name">{userName}</p>
+                            </div>
+                        </div>
+                        <div class="user-actions">
+                            <span class="icon-person user-actions__icon"></span>
+                            <span class="icon-message user-actions__icon"></span>
+                            <span class="icon-uniA3A user-actions__icon" onclick={openSearchModal}></span>
+                            <span class="icon-uniE63E user-actions__icon"></span>
+                            <c-my-work-project-filter is-open={isSearchModalOpen} onclose={closeSearchModal}>
+                            </c-my-work-project-filter>
+                        </div>
+                    </div>
+
+                    <!-- 2. My Work and Accordion section -->
+                    <div style="flex-shrink: 0;">
+                        <div class="navigation-item navigation-item--my-work" onclick={handleMyWorkClick}>
+                            <span class="icon-work"></span>
+                            <span class="navigation-item__label">My Work</span>
+                        </div>
+                        <div class="portfolio-section" onclick={expandPortfolioManagement}>
+                            <h2 class="portfolio-section__title">PORTFOLIO MANAGEMENT</h2>
+                            <span class={portFolioIconName}></span>
+                        </div>
+                        <template if:true={isPortfolioManagementExpanded}>
+                            <div class="navigation-item navigation-item--my-work" onclick={handlePortfolioClick}>
+                                <span class="icon-portfolio"></span>
+                                <span class="navigation-item__label">Portfolio</span>
+                            </div>
+                            <div class="navigation-item navigation-item--my-work">
+                                <span class="icon-workload"></span>
+                                <span class="navigation-item__label">Resource</span>
+                            </div>
+                        </template>
+
+                        <div class="folder-section">
+                            <h2 class="folder-section__title">All FOLDERS</h2>
+                            <span class="icon-side-plus add-folder__icon" onclick={openAddFolderPopup}></span>
+                        </div>
+                    </div>
+
+                    <template if:true={isAddParentFolder}>
+                        <div class="slds-dropdown-trigger slds-dropdown-trigger_click" onclick={stopClose}>
+                            <section class="slds-popover slds-popover_small slds-nubbin_top-left" role="tooltip"
+                                style={popupStyle}>
+                                <div class="slds-p-around_xx-small">
+                                    <div
+                                        class="slds-grid slds-align-middle slds-p-horizontal_none slds-p-vertical_none">
+                                        <lightning-input type="text" name="folderName" variant="label-hidden"
+                                            onchange={handleFolderNameInput} class="slds-m-around_none no-input-outline"
+                                            placeholder="Enter folder name">
+                                        </lightning-input>
+                                        <lightning-button label="Add" variant="brand" class="slds-m-around_none"
+                                            onclick={handleCreateFolder}>
+                                        </lightning-button>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </template>
+
+                    <!-- Loading State -->
+                    <template if:true={isLoading}>
+                        <lightning-spinner alternative-text="Loading..." variant="brand" size="small">
+                        </lightning-spinner>
+                    </template>
+
+                    <!-- 3. Scrollable folder list -->
+                    <div style="flex: 1 1 auto; overflow-y: auto; overflow-x: hidden;" class="slds-sidebar__content">
+                        <ul class="slds-nav_vertical" aria-label="Folder List">
+                            <template if:true={folders}>
+                                <template for:each={folders} for:item="folder">
+                                    <li key={folder.Id}>
+                                        <c-folder-item folder={folder} from='sideBar' folders-for-move={foldersForMove} >
+                                        </c-folder-item>
+                                    </li>
+                                </template>
+                            </template>
+                        </ul>
+                    </div>
+
+                    <!-- 4. Fixed version section at bottom -->
+                    <div class="slds-p-around_small slds-text-align_center slds-text-body_medium slds-text-color_weak"
+                        style="flex-shrink: 0;">
+                        v1.309
+                    </div>
+                </div>
+        <!-- </div> -->
+    </div>
+</template>

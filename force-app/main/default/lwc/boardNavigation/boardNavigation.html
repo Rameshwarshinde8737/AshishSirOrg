@@ -1,0 +1,167 @@
+<template>
+    <div class="board-list-section slds-scrollable_none slds-border_right">
+
+        <!-- Top Section -->
+        <div class="board-list-top-section slds-p-around_xxx-small">
+            <div class="back-portfolio">
+                <button onclick={goToBack} class="icon-button" aria-label="Back Portfolio">
+                    <span class="icon-uniA21"></span>
+                    <span>GO BACK</span>
+                </button>
+            </div>
+
+            <div class="slds-p-around_x-small portfolio-name" style="font-weight: bold;">
+                <span>{projectData.Name}</span>
+            </div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <template if:true={showSpinner}>
+            <lightning-spinner alternative-text="Loading..." variant="brand" size="small"></lightning-spinner>
+        </template>
+
+        <!-- Boards List Section -->
+        <div class="slds-boardList__content">
+            <ul class="slds-nav_vertical" aria-label="Board List" style="line-height: 2.5rem;">
+
+                <!-- Board List -->
+                <template if:true={boardList}>
+                    <template for:each={boardList} for:item="board">
+                        <li key={board.Id}>
+                            <div class="board-list-item">
+
+                                <!-- Board Name -->
+                                <div class="slds-p-left_x-small boardName"
+                                     data-id={board.Id}
+                                     data-name={board.boardType}
+                                     role="button"
+                                     tabindex="0"
+                                     onclick={toggleBoard}>
+                                    <template if:true={board.showDots}>
+                                        <span>Plan Gantt</span>
+                                    </template>
+                                    <template if:false={board.showDots}>
+                                        <span>{board.name}</span>
+                                    </template>
+                                </div>
+
+                                <!-- Board Menu Icons -->
+                                <template if:true={board.showDots}>
+                                    <div role="button" tabindex="0" class="three-dots-icon">
+                                        <span class="icon-vert-dots slds-p-around_small"
+                                              data-id={board.Id}
+                                              data-name={board.boardType}
+                                              onclick={toggleMenu}>
+                                        </span>
+                                    </div>
+                                </template>
+
+                                <!-- Board Expand / Collapse -->
+                                <template if:true={board.showArrowDots}>
+                                    <div class="board-icons three-dots-icon">
+                                        <template if:true={board.expanded}>
+                                            <div onclick={toggleBoard}
+                                                 data-id={board.Id}
+                                                 role="button"
+                                                 tabindex="0"
+                                                 class="chevron-icons">
+                                                <span class="icon-chevron-down slds-p-around_small"></span>
+                                            </div>
+                                        </template>
+
+                                        <template if:false={board.expanded}>
+                                            <div onclick={toggleBoard}
+                                                 data-id={board.Id}
+                                                 role="button"
+                                                 tabindex="0"
+                                                 class="chevron-icons">
+                                                <span class="icon-uniA20 slds-p-around_small"></span>
+                                            </div>
+                                        </template>
+                                    </div>
+
+                                    <div class="three-dots-icon" role="button" tabindex="0">
+                                        <span class="icon-vert-dots slds-p-around_small"
+                                              data-id={board.Id}
+                                              data-name={board.boardType}
+                                              onclick={toggleMenu}>
+                                        </span>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <!-- Child Records -->
+                            <template if:true={board.expanded}>
+                                <ul class="child-list">
+                                    <template if:true={board.ChildRecords} for:each={board.ChildRecords} for:item="child">
+                                        <li key={child.Id} class="child-item">
+                                            <div class="boardChildItem">
+                                                <div class="slds-p-left_small" onclick={navigateToProject} data-id={child.Id} data-name={child.boardType} role="button" tabindex="0">
+                                                    <span>{child.name}</span>
+                                                </div>
+                                                <div class="three-dots-icon" role="button" tabindex="0">
+                                                    <span class="icon-vert-dots slds-p-around_small"
+                                                          data-name={child.boardType}
+                                                          data-id={child.Id}
+                                                          onclick={toggleMenu}>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </template>
+                        </li>
+                    </template>
+                </template>
+
+                <!-- Popup Menu -->
+                <template if:true={isVisibleMenu}>
+                    <section class="slds-dropdown slds-dropdown_actions slds-dropdown_right custom-popup"
+                             style={popupStyle}
+                             role="menu"
+                             onclick={stopClose}>
+                        <ul class="slds-dropdown__list" role="presentation">
+                            <template for:each={menuOption} for:item="option">
+                                <li key={option.id} class="slds-dropdown__item" role="presentation">
+                                    <a role="menuitem"
+                                       tabindex="0"
+                                       data-value={option.value}
+                                       onclick={handleMenuAction}>
+                                        <span class="slds-truncate" title={option.name}>{option.name}</span>
+                                    </a>
+                                </li>
+                            </template>
+                        </ul>
+                    </section>
+                </template>
+
+                <!-- Add Item Input -->
+                <template if:true={isAddItem}>
+                    <section class="slds-popover slds-popover_small" role="dialog" style={popupStyle}>
+                        <div onclick={stopClose}>
+                            <div class="slds-grid slds-align-middle">
+                                <lightning-input type="text"
+                                                 variant="label-hidden"
+                                                 onchange={handleNameChange}
+                                                 value={inputValue}
+                                                 placeholder={placeholder}>
+                                </lightning-input>
+
+                                <lightning-button label={buttonLabel}
+                                                  variant="brand"
+                                                  onclick={handleCreateFolder}>
+                                </lightning-button>
+                            </div>
+                        </div>
+                    </section>
+                </template>
+            </ul>
+        </div>
+
+        <!-- Footer -->
+        <div class="slds-p-around_small slds-text-align_center slds-text-body_medium slds-text-color_weak" style="flex-shrink: 0;">
+            v1.309
+        </div>
+    </div>
+</template>

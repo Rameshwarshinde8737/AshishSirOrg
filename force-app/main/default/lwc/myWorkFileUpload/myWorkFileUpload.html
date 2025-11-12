@@ -1,0 +1,86 @@
+<template>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading"
+             class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            
+            <!-- Header -->
+            <header class="slds-modal__header custom-modal-header">
+                <h2 id="modal-heading" class="slds-text-heading_medium title-text">
+                    {child.Title}
+                </h2>
+                <!-- Close Button -->
+                <button class="slds-button slds-button_icon slds-modal__close"
+                        title="Close" onclick={handleClose}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close"
+                                    size="x-small"></lightning-icon>
+                </button>
+            </header>
+
+            <!-- Body -->
+            <div class="slds-modal__content slds-p-around_medium slds-is-relative">
+                <template if:true={isLoading}>
+                    <lightning-spinner alternative-text={labels.Loading} size="small"></lightning-spinner>
+                </template>
+
+                <lightning-input type="search" label={labels.FilterByTitle}
+                                 placeholder={labels.FilterByTitle} value={filterText}
+                                onchange={handleFilterChange}>
+                </lightning-input>
+
+                <!-- File Table -->
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-m-top_small">
+                    <thead>
+                        <tr>
+                            <th scope="col"><div class="slds-truncate">{labels.Title}</div></th>
+                            <th scope="col"><div class="slds-truncate">{labels.Attached}</div></th>
+                            <th scope="col"><div class="slds-truncate">{labels.Action}</div></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template if:true={filteredRecords.length}>
+                            <template for:each={filteredRecords} for:item="record" >
+                                <tr key={record.Id}>
+                                    <td>{record.Title}</td>
+                                    <td>{record.LastModifiedDate}</td>
+                                    <td class="slds-text-align_center">
+                                        <span class="icon-link-icon slds-m-right_small pointer"
+                                              data-id={record.Id}
+                                              onclick={handleOpenFile}></span>
+                                        <span class="icon-uniA43 pointer"
+                                              data-id={record.Id}
+                                              onclick={handleDeleteFile}></span>
+                                    </td>
+                                </tr>
+                            </template>
+                        </template>
+                        <template if:false={filteredRecords.length}>
+                            <tr>
+                                <td colspan="3" class="slds-text-align_center slds-p-vertical_small" style="height: 100px;">
+                                    {labels.NoRecordsFound}
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+
+                <!-- Custom File Upload -->
+                <div class="button-wapper">
+                    <div >
+                        <input type="text" class="file-name-display" placeholder={labels.NoFileChosen}
+                               readonly value={selectedFileName}
+                               onclick={openFileDialog}/>
+                        <label class="file-browse-btn">
+                            {labels.BrowseFile}
+                            <input type="file" class="hidden-file-input" onchange={handleFileSelected} />
+                        </label>
+                    </div>
+                    <div >
+                        <button class="uploadBtn" onclick={handleUploadClick}>{labels.UploadFile}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

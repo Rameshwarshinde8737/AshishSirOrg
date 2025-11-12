@@ -1,0 +1,423 @@
+<template>
+    <div class="slds-grid slds-wrap">
+        <lightning-card title="My Work Items" class="slds-size_1-of-1 ">
+            <div class="slds-container_center">
+                <div class="slds-box slds-box_xx-small slds-m-around_medium">
+
+                    <!-- Fixed Header -->
+                    <div class="slds-grid slds-wrap slds-m-top_x-small">
+
+                        <!-- Work Items count -->
+                        <div class="slds-col slds-small-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_4-of-12 
+                                        slds-grid slds-grid_vertical-align-center slds-m-bottom_x-small">
+                            <lightning-icon icon-name="utility:display_text" alternative-text="Display Text Icon"
+                                size="small" class="slds-m-right_x-small">
+                            </lightning-icon>
+                            <span class="slds-text-title_bold">
+                                WORK ITEMS ({workItemsCount})
+                            </span>
+                        </div>
+
+                        <!-- Date filters -->
+                        <div class="slds-col slds-small-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_4-of-12 
+                                        slds-grid slds-grid_vertical-align-center slds-m-bottom_x-small">
+                            <div class="slds-is-relative">
+                                <span class="pointer" onclick={toggleDateFilterPopover}>
+                                    {filterLabel}
+                                </span>
+
+                                <!-- Popover -->
+                                <template if:true={isDateFilterOpen}>
+                                    <section class="slds-popover slds-nubbin_top-left custom-popover-date"
+                                        onclick={stopClose}>
+                                        <div class="slds-popover__body">
+                                            <div class="slds-grid slds-gutters slds-m-bottom_small">
+                                                <div class="slds-col slds-size_1-of-2">
+                                                    <lightning-input type="date" label="Start Date"
+                                                        name="filterStartDate" value={filterStartDate}
+                                                        onchange={handleFilterDateChange}>
+                                                    </lightning-input>
+                                                </div>
+                                                <div class="slds-col slds-size_1-of-2">
+                                                    <lightning-input type="date" label="End Date" name="filterEndDate"
+                                                        value={filterEndDate} onchange={handleFilterDateChange}>
+                                                    </lightning-input>
+                                                </div>
+                                            </div>
+                                            <div class="slds-grid slds-grid_align-end">
+                                                <lightning-button variant="neutral" label="Cancel"
+                                                    onclick={handleFilterCancel}>
+                                                </lightning-button>
+                                                <lightning-button class="slds-m-left_small" variant="destructive"
+                                                    label="Delete" onclick={handleFilterDelete}>
+                                                </lightning-button>
+                                                <lightning-button class="slds-m-left_small" variant="brand" label="Save"
+                                                    onclick={handleFilterSave}>
+                                                </lightning-button>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- See Tasks toggle -->
+                        <div
+                            class="slds-col slds-small-size_6-of-12 slds-medium-size_3-of-12 slds-large-size_2-of-12 
+                                        slds-grid slds-grid_align-center slds-grid_vertical-align-center slds-m-bottom_x-small">
+                            <span class="slds-m-right_x-small">See Tasks</span>
+                            <lightning-input type="toggle" class="custom-toggle" message-toggle-active=""
+                                message-toggle-inactive="" checked={isActive} onchange={handleSeeTasksToggle}>
+                            </lightning-input>
+                        </div>
+
+                        <!-- Filter combobox -->
+                        <div
+                            class="slds-col slds-small-size_6-of-12 slds-medium-size_3-of-12 slds-large-size_2-of-12 
+                                        slds-grid slds-grid_align-center slds-grid_vertical-align-center slds-m-bottom_x-small">
+                            <lightning-combobox name="options" value={selectedWorkBy} variant="label-hidden"
+                                placeholder="Choose one" options={viewOptions} onchange={handleChange}>
+                            </lightning-combobox>
+                        </div>
+                    </div>
+
+
+                    <!-- Scrollable Filter Accordion -->
+                    <div class="accordion-container slds-m-top_medium">
+                        <template for:each={workSections} for:item="section">
+                            <div key={section.Name}>
+
+                                <!-- Accordion Button -->
+                                <button class="accordion" data-name={section.Name} onclick={handleAccordionClick}>
+                                    <span class="dot" style={section.dotStyle}></span>
+                                    <span class="label">{section.Label}</span> ({section.ChildCount})
+                                    <lightning-icon class="accordion-icon" data-section={section.Name}
+                                        icon-name="utility:chevrondown" size="xx-small" alternative-text="Expand">
+                                    </lightning-icon>
+                                </button>
+
+                                <!-- Panel Content -->
+                                <div class="panel accordion-panel" data-name={section.Name}>
+                                    <template if:true={section.isLoading}>
+                                        <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+                                    </template>
+
+                                    <template if:true={section.children}>
+                                        <template for:each={section.children} for:item="child">
+                                            <div key={child.Id}>
+
+                                                <!-- Child header info -->
+                                                <div class="slds-grid">
+                                                    <div class="slds-col slds-size_1-of-12">
+                                                        <span style="font-size: 0.6rem;">
+                                                            {child.ItemType}
+                                                        </span>
+                                                    </div>
+                                                    <div class="slds-col slds-size_2-of-12">
+                                                        <div class="slds-grid slds-grid_vertical-align-center"
+                                                            tabindex="0">
+                                                            <span class="icon-portfolio-icon"></span>
+                                                            <span class="slds-m-left_xx-small">
+                                                                {child.ProjectRoomName}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-size_2-of-12">
+                                                        <div class="slds-grid slds-grid_vertical-align-center">
+                                                            <button class="slds-button slds-button_reset pointer"
+                                                                data-id={child.Id} onclick={handleOpenKanbanBorad}>
+                                                                <span class="icon-listview"></span>
+                                                                <span class="slds-m-left_xx-small">
+                                                                    {child.ValueStreamName}
+                                                                </span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Child details -->
+                                                <div class="slds-grid">
+                                                    <div class="slds-col slds-size_6-of-12">
+                                                        <button class="slds-button slds-button_reset pointer">
+                                                            <span class="slds-text-body_x-small">{child.Name}</span>
+                                                        </button>
+                                                    </div>
+
+                                                    <!-- Priority + Warranty/Status/Offline -->
+                                                    <div class="slds-col slds-size_3-of-12">
+                                                        <div
+                                                            class="slds-grid slds-grid_align-end slds-grid_vertical-align-center">
+                                                            <div class="slds-is-relative">
+                                                                <button class={child.priorityColorClass}
+                                                                    data-type="dropdown" data-id={child.Id}
+                                                                    onclick={openPopup}>
+                                                                </button>
+
+                                                                <template if:true={child.isDropdownOpen}>
+                                                                    <div class="dropdown-menu slds-m-top_x-small">
+                                                                        <button
+                                                                            class="priority-green slds-button slds-button_reset pointer"
+                                                                            onclick={handleUpdatePriority}
+                                                                            data-id={child.Id} data-value="Low">
+                                                                            Low</button>
+                                                                        <button
+                                                                            class="priority-blue slds-button slds-button_reset pointer"
+                                                                            onclick={handleUpdatePriority}
+                                                                            data-id={child.Id} data-value="Medium">
+                                                                            Medium
+                                                                        </button>
+                                                                        <button
+                                                                            class="priority-red slds-button slds-button_reset pointer"
+                                                                            onclick={handleUpdatePriority}
+                                                                            data-id={child.Id} data-value="Critical">
+                                                                            Critical
+                                                                        </button>
+                                                                    </div>
+                                                                </template>
+                                                            </div>
+                                                            <div>
+                                                                <button class={child.iconCircleClass} data-id={child.Id}
+                                                                    data-value="0" data-type="markDone"
+                                                                    onclick={handleStateChange}>
+                                                                </button>
+                                                            </div>
+
+                                                            <template if:true={child.isTask}>
+                                                                <span tabindex="0"
+                                                                    class="slds-m-left_x-small slds-text-body_small">
+                                                                    {child.Status}
+                                                                </span>
+                                                            </template>
+
+                                                            <template if:false={child.isTask}>
+                                                                <div class="slds-is-relative">
+                                                                    <button class={child.statusClass} data-id={child.Id}
+                                                                        data-type="status" onclick={openPopup}></button>
+                                                                    <template if:true={child.isStatusOpen}>
+                                                                        <section
+                                                                            class="slds-popover slds-nubbin_top-right custom-status-popover"
+                                                                            onclick={stopClose}>
+                                                                            <span
+                                                                                class="icon-cross1 pointer slds-float_right"
+                                                                                style="font-size:0.75rem;"
+                                                                                data-id={child.Id} data-type="status"
+                                                                                onclick={closePopup}>
+                                                                            </span>
+                                                                            <div class="slds-p-around_x-small">
+                                                                                <template for:each={child.statusOptions}
+                                                                                    for:item="opt">
+                                                                                    <!-- <span tabindex="0" key={opt.value} class={opt.class} data-id={child.Id} data-value={opt.value} data-type="status"
+                                                                                        onclick={handleStateChange}>
+                                                                                    </span> -->
+                                                                                    <button key={opt.value}
+                                                                                        class={opt.class}
+                                                                                        data-id={child.Id}
+                                                                                        data-value={opt.value}
+                                                                                        data-type="status"
+                                                                                        onclick={handleStateChange}></button>
+                                                                                </template>
+                                                                            </div>
+                                                                        </section>
+                                                                    </template>
+                                                                </div>
+                                                            </template>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Icons + Modal + Popovers -->
+                                                    <div class="slds-col slds-size_3-of-12">
+                                                        <div
+                                                            class="slds-grid slds-grid_align-end slds-grid_vertical-align-center">
+
+                                                            <template if:false={child.isTask}>
+                                                                <button class="slds-button slds-button_icon pointer"
+                                                                    title="Flash">
+                                                                    <span class="icon-flash"></span>
+                                                                </button>
+                                                            </template>
+
+                                                            <template if:false={child.isTask}>
+                                                                <div class="slds-is-relative"
+                                                                    style="display:inline-block;">
+                                                                    <button
+                                                                        class="slds-button slds-button_icon slds-m-left_x-small pointer"
+                                                                        data-id={child.Id} onclick={openFileUploadModal}
+                                                                        title="Upload File">
+                                                                        <span class="icon-work"></span>
+                                                                    </button>
+                                                                    <!-- File Upload Modal -->
+                                                                    <c-my-work-file-upload if:true={isModalOpen}
+                                                                        child={activeChild} session-id={sessionId}
+                                                                        record-id={activeChild.Id}
+                                                                        onrefreshrecordcount={handleRefreshRecordCount}
+                                                                        onclose={closefileUploadModal}>
+                                                                    </c-my-work-file-upload>
+                                                                    <template if:true={child.filesCount}>
+                                                                        <span
+                                                                            class="slds-badge badge-notify pointer">{child.filesCount}</span>
+                                                                    </template>
+                                                                </div>
+                                                            </template>
+
+
+
+
+                                                            <!-- Clock Popover -->
+                                                            <template if:false={child.isTask}>
+                                                                <div class="slds-is-relative">
+                                                                    <button
+                                                                        class="slds-button slds-button_icon slds-m-left_x-small pointer"
+                                                                        onclick={openPopup} data-id={child.Id}
+                                                                        data-type="clock" title="Log Time">
+                                                                        <span class="icon-clock1"></span>
+                                                                    </button>
+
+                                                                    <template if:true={child.isClockOpen}>
+                                                                        <section
+                                                                            class="slds-popover slds-nubbin_top-right custom-popover-clock"
+                                                                            onclick={stopClose}>
+                                                                            <div
+                                                                                class="custom-popover-body slds-grid slds-wrap slds-gutters">
+                                                                                <div class="slds-col slds-size_1-of-3">
+                                                                                    <lightning-input type="date"
+                                                                                        label="Date" name="logDate"
+                                                                                        value={logDate}
+                                                                                        onchange={handleInputChange}>
+                                                                                    </lightning-input>
+                                                                                </div>
+                                                                                <div class="slds-col slds-size_1-of-3">
+                                                                                    <lightning-input type="input"
+                                                                                        label="Logged Time"
+                                                                                        name="logTime" value={logTime}
+                                                                                        onchange={handleInputChange}>
+                                                                                    </lightning-input>
+                                                                                </div>
+                                                                                <div class="slds-col slds-size_1-of-3">
+                                                                                    <lightning-combobox
+                                                                                        name="logDuration"
+                                                                                        label="Duration"
+                                                                                        value={logDuration}
+                                                                                        options={durationOptions}
+                                                                                        onchange={handleInputChange}>
+                                                                                    </lightning-combobox>
+                                                                                </div>
+                                                                                <div class="slds-col slds-size_1-of-1">
+                                                                                    <lightning-textarea
+                                                                                        label="Description"
+                                                                                        name="logDescription"
+                                                                                        value={logDescription}
+                                                                                        onchange={handleInputChange}>
+                                                                                    </lightning-textarea>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div
+                                                                                class="slds-grid slds-grid_align-end slds-m-top_small">
+                                                                                <lightning-button variant="neutral"
+                                                                                    label="Cancel" data-type="clock"
+                                                                                    data-id={child.Id}
+                                                                                    onclick={closePopup}>
+                                                                                </lightning-button>
+                                                                                <lightning-button
+                                                                                    class="slds-m-left_small"
+                                                                                    variant="brand" label="Save"
+                                                                                    data-id={child.Id}
+                                                                                    onclick={handleLogSave}>
+                                                                                </lightning-button>
+                                                                            </div>
+                                                                        </section>
+                                                                    </template>
+                                                                </div>
+                                                            </template>
+
+                                                            <!-- Share + Due Date -->
+                                                            <div class="slds-is-relative" style="display:inline-block;">
+                                                                <button
+                                                                    class="slds-button slds-button_icon slds-m-left_x-small pointer"
+                                                                    data-id={child.Id} onclick={openChatterModal}
+                                                                    title="Message">
+                                                                    <span class="icon-message"></span>
+                                                                </button>
+                                                                <template if:true={child.ChatterCount}>
+                                                                    <span
+                                                                        class="slds-badge badge-notify">{child.ChatterCount}</span>
+                                                                </template>
+                                                                <!-- <template > -->
+                                                                <c-chatter-modal if:true={isChatterOpen}
+                                                                    record-id={activeChild.Id}
+                                                                    onclosechatter={closeChatterModal}></c-chatter-modal>
+                                                                <!-- </template> -->
+                                                            </div>
+                                                            <div class="slds-is-relative slds-m-left_x-small">
+                                                                <button class="slds-button slds-button_icon pointer"
+                                                                    data-type="date" data-id={child.Id}
+                                                                    onclick={openPopup}>
+                                                                    <lightning-formatted-date-time value={child.DueDate}
+                                                                        day="2-digit" month="short" year="numeric"
+                                                                        time-zone="UTC">
+                                                                    </lightning-formatted-date-time>
+                                                                </button>
+
+                                                                <template if:true={child.isDateOpen}>
+                                                                    <section
+                                                                        class="slds-popover slds-nubbin_top-right custom-popover"
+                                                                        onclick={stopClose}>
+                                                                        <!-- Loader -->
+                                                                        <template if:false={isLoading}>
+                                                                            <div
+                                                                                class="slds-m-bottom_x-small slds-grid slds-gutters">
+                                                                                <div class="slds-col slds-size_1-of-2">
+                                                                                    <lightning-input type="date"
+                                                                                        label="Start Date"
+                                                                                        name="startDate"
+                                                                                        value={startDate}
+                                                                                        onchange={handlePopoverDateChange}
+                                                                                        onclick={stopClose}
+                                                                                        data-id={child.Id}>
+                                                                                    </lightning-input>
+                                                                                </div>
+                                                                                <div class="slds-col slds-size_1-of-2">
+                                                                                    <lightning-input type="date"
+                                                                                        label="Due Date" name="dueDate"
+                                                                                        value={dueDate}
+                                                                                        onchange={handlePopoverDateChange}
+                                                                                        onclick={stopClose}
+                                                                                        data-id={child.Id}
+                                                                                        key={dueDateKey}>
+                                                                                    </lightning-input>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="slds-grid slds-grid_align-end">
+                                                                                <lightning-button variant="neutral"
+                                                                                    label="Cancel" data-id={child.Id}
+                                                                                    data-type="date"
+                                                                                    onclick={closePopup}>
+                                                                                </lightning-button>
+                                                                                <lightning-button
+                                                                                    class="slds-m-left_small"
+                                                                                    variant="brand" label="Save"
+                                                                                    data-id={child.Id}
+                                                                                    onclick={handleDateSave}>
+                                                                                </lightning-button>
+                                                                            </div>
+                                                                        </template>
+                                                                    </section>
+                                                                </template>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading..." size="small"></lightning-spinner>
+            </template>
+        </lightning-card>
+    </div>
+</template>

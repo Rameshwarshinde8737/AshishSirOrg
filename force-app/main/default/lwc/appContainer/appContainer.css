@@ -1,0 +1,40 @@
+.app-container {
+     height:70vh;
+    /* Full viewport height */
+    position: relative;
+    background-color: white;
+    display: flex;
+    flex-direction: row; 
+     overflow: hidden; 
+}
+
+
+.main-container{
+    width: 100%;
+    height: calc(100vh - 202px);
+    padding: 0 30px;
+
+}
+
+.sidebar-toggle {
+    position: absolute;
+    top: 0px;           /* adjust to align with header */
+    left: 208px;         /* same as sidebar width when open */
+    z-index: 10;
+    background: #fff;    /* optional: make it visible */
+    border: none;
+    width: 25px;
+    height: 30px;
+}
+.sidebar-toggle span{
+    color: #565F64;
+}
+
+
+.sidebar-toggle.open {
+    left: 208px; /* sidebar open */
+}
+
+.sidebar-toggle.closed {
+    left: 0; /* sidebar closed */
+}

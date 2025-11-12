@@ -1,0 +1,44 @@
+.projectCount {
+    font-size: 0.77rem;
+    color: #7f8b91;
+    font-weight: 600;
+}
+
+.folderTxt{
+    font-size: 0.7rem;
+    color: #7f8b91;
+
+}
+.projTxt{
+    font-size: 0.813rem;
+    color: #212b32;
+}
+.icons {
+    color: #7f8b91;
+    display: inline-block;
+    text-align: center;
+    font-size: 0.813rem;
+}
+.headerContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px 10px 0px;
+}
+
+header {
+    padding: 0px;
+    color:#1b1d1f;
+    border-bottom: none;
+}
+
+.headerTxt{
+    font-size: 1rem;
+    text-align: left;
+    padding-left: 10px;
+}
+
+.pointer {
+    cursor: pointer;
+}

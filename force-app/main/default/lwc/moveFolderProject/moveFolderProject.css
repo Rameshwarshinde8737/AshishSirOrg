@@ -1,0 +1,151 @@
+.headerContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px 10px 0px;
+}
+
+header {
+    padding: 0px;
+    color: #1b1d1f;
+    border-bottom: none;
+}
+
+.headerTxt {
+    font-size: 1rem;
+    text-align: left;
+    padding-left: 10px;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+
+.picker-shell {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #ddd;
+    padding: 5px 0;
+    cursor: pointer;
+}
+
+.dropdownLabel{
+    padding-left: 10px;
+}
+
+.dropdownIcon{
+       padding-right: 10px;
+}
+
+
+/* clone component style */
+
+:host {
+  display: block;
+}
+
+.or-label span {
+  font-weight: 600;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid #e5e5e5;
+  border-radius: 0.25rem;
+  margin-bottom: 0.35rem;
+  cursor: pointer;
+}
+
+.row__label {
+  font-size: 0.85rem;
+  padding: 0.25rem 0.5rem;
+}
+
+
+.row__button.is-checked lightning-icon {
+  --slds-g-color-foreground-default: var(--slds-g-color-success-50, #04844b);
+}
+
+.row__button.is-disabled lightning-icon {
+  --slds-g-color-foreground-default: #9d9d9d;
+}
+
+.headerContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px 10px 0px;
+}
+
+header {
+    padding: 0px;
+    color: #1b1d1f;
+    border-bottom: none;
+}
+
+.headerTxt {
+    font-size: 1rem;
+    text-align: left;
+    padding-left: 10px;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.clone-modal-small {
+    max-width: 30rem;   /* Or whatever width you prefer */
+    width: 30rem;
+}
+
+.or-separator {
+    text-align: center;
+    margin: 0.25rem 0;
+    font-weight: 500;
+}
+
+.input-small {
+    max-width: 315px; /* adjust as needed */
+}
+
+.picker-shell {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #ddd;
+    padding: 5px 0;
+    cursor: pointer;
+}
+
+.dropdownLabel{
+    padding-left: 10px;
+}
+
+.dropdownIcon{
+       padding-right: 10px;
+}
+
+.row__button {
+    padding: 0.3rem 0.5rem;
+    background-color: #f4f6f9; /* default background */
+    cursor: pointer;
+    border: none;
+}
+
+.row__button.green-bg {
+    background-color: #6dc762; /* green when clicked */
+    color: white;
+}
+.bg-none{
+  background-color: #9a9b9c; /* green when clicked */
+    color: white;
+}

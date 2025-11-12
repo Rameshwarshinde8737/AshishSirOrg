@@ -1,0 +1,253 @@
+body{   
+    font-family: Arial, sans-serif;
+}
+
+/* Sidebar toggle classes */
+.sidebar-wrapper {
+    transition: margin-left 0.4s, opacity 0.4s;
+    width: 240px;
+    opacity: 1;
+    margin-left: 0;
+}
+
+.sidebar-wrapper.closed {
+    margin-left: -240px; /* Move sidebar outside screen */
+    opacity: 0;
+}
+
+.sidebar-user-section {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 240px;
+    background-color: #f4f6f9;
+    font-family: Arial, sans-serif;
+}
+
+.board-list-section {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 240px;
+    background-color: #f4f6f9;
+    font-family: Arial, sans-serif;
+    overflow: visible;
+}
+
+
+.go-to-mywork:hover {
+    color: #ed6c00;
+    transition: color 0.1s;
+}
+
+.my-sidebar-welcome-heading {
+   font-size: 0.75rem;
+   color: #9a9b9c;
+   text-transform: uppercase;
+}
+
+/* Custom scrollbar for webkit browsers */
+.slds-sidebar__content::-webkit-scrollbar {
+    width: 4px;
+}
+.slds-sidebar__content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+.slds-sidebar__content::-webkit-scrollbar-thumb {
+    background: #c9c9c9;
+    border-radius: 4px;
+}
+
+/* Ensure popup doesn't overflow sidebar */
+.slds-dropdown {
+    min-width: 150px;
+}
+
+.no-input-outline {
+    --slds-c-input-shadow-focus: none;
+}
+
+.board-list-top-section {
+    display: flex;
+    padding: 0.5rem;
+    flex-direction: column;
+}
+
+.icon-bar {
+    font-size: 0.813rem;
+    gap: 1.5em;
+    align-items: center;
+    margin-top: 0.8rem;
+    color: #9a9b9c;
+    padding: 0.3rem;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+
+:host {
+  /* Uses a styling hook to ensure no border appears on hover */
+  --slds-c-button-menu-color-border: transparent;
+}
+
+.name:hover {
+  color: #ed6c00;
+  transition: color 0.1s;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  height: 45px;
+}
+
+.name {
+  flex-grow: 1;
+  cursor: pointer;
+}
+
+.dots {
+  flex-shrink: 0;
+}
+
+.custom-dropdown-item {
+  text-decoration: none;
+  color: #000;
+  padding: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.custom-dropdown-item:hover {
+  color: #ed6c00;
+  background-color: rgb(250, 250, 250);
+}
+
+/*-- Sidebar refines css classes--*/
+
+.container {
+    display: flex;
+    height: 100%;
+    box-shadow: 5px 0 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Sidebar Base Styles */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--sidebar-background, #f3f3f3);
+}
+
+.sidebar--folder-list,
+.sidebar--board-list {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 240px;
+    background-color: #f4f6f9;
+    font-family: Arial, sans-serif;
+}
+
+.sidebar__user-section {
+    padding: 0.125rem;
+    background-color: #ffffff;
+    flex-shrink: 0;
+    color: #9a9b9c
+}
+
+.sidebar__welcome-heading {
+    font-size: 0.75rem;
+    color: #9a9b9c;
+    text-transform: uppercase;
+    padding: 0.25rem;
+    position: relative;
+    margin: 0 0.25rem;
+    top: 0.313rem;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    padding: 0.25rem;
+    margin: 0.125rem;
+}
+
+.user-profile__name {
+    font-size: 0.875rem;
+    font-weight: bold;
+    color: #1b1d1f;
+    padding: 0.125rem;
+}
+
+.user-actions {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.user-actions__icon{
+    cursor: pointer;
+    color: #9a9b9c;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+
+.navigation-item {
+    display: flex;
+    color: #1b1d1f;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.navigation-item:hover {
+   color: #ed6c00;
+}
+
+.navigation-item--my-work {
+    cursor: pointer;
+}
+
+.portfolio-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.313rem 0.75rem;
+    cursor: pointer;
+}
+
+.portfolio-section__title, .folder-section__title {
+    font-size: 0.75rem;
+    color: #9a9b9c;
+}
+
+.folder-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.313rem 0.75rem;
+}
+
+.add-folder__icon{
+    font-size: 0.938rem;
+    color: #545658;
+    padding: 0.5rem;
+    position: relative;
+    right: -0.625rem;
+    cursor: pointer;   
+    font-weight: bold;
+}
+
+.portfolio-section span {
+    font-size: 0.625rem;
+    color: #545658;
+    padding: 0.5rem;
+    position: relative;
+    right: -0.625rem;
+    cursor: pointer;
+}

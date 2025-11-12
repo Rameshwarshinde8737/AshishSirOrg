@@ -1,0 +1,453 @@
+/* My Work List Container */
+.my-work-list-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: #fff;
+}
+
+/* Header Section */
+.my-work-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e0e5ee;
+    gap: 16px;
+    flex-wrap: wrap;
+    min-height: 50px;
+}
+
+.work-count-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 200px;
+}
+
+.work-count-icon {
+    width: 24px;
+    height: 24px;
+    background-image: url('/resources/images/mywork-icon.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.work-count-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: #16325c;
+}
+
+.date-range-section {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 12px;
+    background-color: #fff;
+    border: 1px solid #d8dde6;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.date-range-section:hover {
+    background-color: #f4f6f9;
+}
+
+.date-label {
+    font-size: 11px;
+    color: #706e6b;
+    margin-bottom: 4px;
+}
+
+.from-date,
+.to-date {
+    font-size: 12px;
+    color: #16325c;
+}
+
+.date-value {
+    font-weight: 600;
+    margin-left: 4px;
+}
+
+.task-toggle {
+    max-width: 120px;
+}
+
+.work-filter {
+    max-width: 260px;
+}
+
+/* Work Items List */
+.work-items-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+}
+
+/* Work Group */
+.work-group {
+    margin-bottom: 8px;
+}
+
+.work-group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: #f4f6f9;
+    border-left: 4px solid;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.2s;
+    border-radius: 4px;
+}
+
+.work-group-header:hover {
+    background-color: #e8eaed;
+}
+
+.work-group-header.expanded {
+    background-color: #fff;
+    border-bottom: 1px solid #e0e5ee;
+}
+
+.group-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.arrow-down::after {
+    content: '▼';
+    font-size: 10px;
+    color: #706e6b;
+}
+
+.arrow-right::after {
+    content: '▶';
+    font-size: 10px;
+    color: #706e6b;
+}
+
+/* Work Item */
+.work-item {
+    padding: 12px 16px;
+    margin-left: 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #e0e5ee;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.work-item:hover {
+    background-color: #f4f6f9;
+}
+
+.item-info-header,
+.item-details {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap;
+}
+
+.item-info-header {
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: #706e6b;
+}
+
+.item-details {
+    font-size: 13px;
+}
+
+/* Item Type Badge */
+.item-type {
+    padding: 2px 8px;
+    background-color: #e8eaed;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #16325c;
+}
+
+/* Link Names with Icons */
+.link-name {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.project-icon::before,
+.board-icon::before,
+.gantt-icon::before,
+.card-icon::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.project-icon::before {
+    background-image: url('/resources/images/project-icon.png');
+}
+
+.board-icon::before {
+    background-image: url('/resources/images/board-icon.png');
+}
+
+.gantt-icon::before {
+    background-image: url('/resources/images/gantt-icon.png');
+}
+
+.card-icon::before {
+    background-image: url('/resources/images/card-icon.png');
+}
+
+/* Item Name */
+.item-name {
+    flex: 1;
+    font-weight: 600;
+    color: #16325c;
+    min-width: 200px;
+}
+
+.name-text {
+    color: #0070d2;
+    cursor: pointer;
+}
+
+.name-text:hover {
+    text-decoration: underline;
+}
+
+/* Stickers */
+.stickers {
+    display: inline-flex;
+    gap: 4px;
+    margin-left: 8px;
+}
+
+.sticker-img {
+    width: 20px;
+    height: 20px;
+    border-radius: 2px;
+}
+
+/* Priority Indicator */
+.priority {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.priority-1 {
+    background-color: #e74c3c;
+}
+
+.priority-2 {
+    background-color: #f39c12;
+}
+
+.priority-3 {
+    background-color: #3498db;
+}
+
+.priority-0 {
+    background-color: #95a5a6;
+}
+
+/* Checkbox */
+.checkbox {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #d8dde6;
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+}
+
+.checkbox.checked {
+    background-color: #0070d2;
+    border-color: #0070d2;
+}
+
+.checkbox.checked::after {
+    content: '✓';
+    position: absolute;
+    top: -2px;
+    left: 2px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.checkbox:hover {
+    border-color: #0070d2;
+}
+
+/* Harvey Ball (Progress Indicator) */
+.harvey-ball {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #0070d2;
+    position: relative;
+    background-color: #fff;
+}
+
+.harvey-0 {
+    background: linear-gradient(90deg, transparent 50%, #fff 50%);
+}
+
+.harvey-25 {
+    background: linear-gradient(90deg, #0070d2 50%, #fff 50%),
+                linear-gradient(0deg, #fff 50%, transparent 50%);
+}
+
+.harvey-50 {
+    background: linear-gradient(90deg, #0070d2 50%, #fff 50%);
+}
+
+.harvey-75 {
+    background: linear-gradient(90deg, #0070d2 50%, #fff 50%),
+                linear-gradient(180deg, #fff 50%, transparent 50%);
+}
+
+.harvey-100 {
+    background-color: #0070d2;
+}
+
+/* Task Status */
+.task-status {
+    padding: 2px 8px;
+    background-color: #e8eaed;
+    border-radius: 3px;
+    font-size: 11px;
+    color: #16325c;
+}
+
+/* Icon Buttons */
+.quick-action-icon,
+.files-icon,
+.log-time-icon,
+.chatter-icon {
+    width: 24px;
+    height: 24px;
+    background-size: 16px;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    cursor: pointer;
+}
+
+.quick-action-icon {
+    background-image: url('/resources/images/quick-action.png');
+}
+
+.files-icon {
+    background-image: url('/resources/images/files.png');
+}
+
+.log-time-icon {
+    background-image: url('/resources/images/log-time.png');
+}
+
+.chatter-icon {
+    background-image: url('/resources/images/chatter.png');
+}
+
+.badge-count {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background-color: #e74c3c;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 5px;
+    border-radius: 10px;
+    min-width: 16px;
+    text-align: center;
+}
+
+/* Due Date */
+.due-date {
+    margin-left: auto;
+    font-size: 12px;
+    color: #706e6b;
+    white-space: nowrap;
+}
+
+/* Task Spacer */
+.task-spacer {
+    width: 54px;
+}
+
+/* No Items Message */
+.no-items-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    color: #706e6b;
+    font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .my-work-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .work-count-section,
+    .date-range-section,
+    .task-toggle,
+    .work-filter {
+        width: 100%;
+        max-width: none;
+    }
+
+    .item-info-header,
+    .item-details {
+        flex-wrap: wrap;
+    }
+
+    .work-item {
+        margin-left: 10px;
+    }
+}
+
+/* Loading Spinner */
+lightning-spinner {
+    margin: 40px auto;
+}
+
+/* Scrollbar Styling */
+.work-items-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.work-items-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.work-items-list::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.work-items-list::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
