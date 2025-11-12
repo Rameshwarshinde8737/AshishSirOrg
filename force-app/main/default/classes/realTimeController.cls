@@ -54,7 +54,7 @@ global with sharing class realTimeController {
         }
         
     }
-    
+   
     //14.12.2017 - passing current valuestream record on load
     global realTimeController(leankor__ValueStream__c valueStream) {
         this.theValueStream = valueStream;
