@@ -193,7 +193,7 @@ global with sharing class realTimeController {
         // Input validation
  		for (String ownerId : ownerList) {
             if (String.isNotBlank(ownerId) && Util.getSObjectName(ownerId) != 'User') {
-                System.debug('Error: Invalid input');
+               
                 throw new Util.LeanException('Error: Invalid input');
             }
         }
