@@ -147,7 +147,7 @@ global with sharing class realTimeController {
         }
 
         ApexPages.currentPage().setRedirect(false);
-        
+        System.debug('Redirecting to LeankorNav page');
         return ApexPages.currentPage();
     }
 
